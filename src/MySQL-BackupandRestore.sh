@@ -33,9 +33,9 @@ dbBackup () {
                 --single-transaction \
                 --triggers \
                 --extended-insert"
-    log "Starting backup using these settings: Host: \"${MYSQL_SOURCE_HOST}\" Username: \"${MYSQL_SOURCE_USERNAME}\" Database: \"${MYSQL_SOURCE_DATABASE}\""
+    log "Backuping using these settings: Host: \"${MYSQL_SOURCE_HOST}\" Username: \"${MYSQL_SOURCE_USERNAME}\" Database: \"${MYSQL_SOURCE_DATABASE}\""
     result=$(($(which mysqldump) ${parameters} -u $2 -p$3 -h $1 $4 > ${DEST_DIR}/$1_$4_${DATETIME}.sql) 2>&1)
-    log "Backup finished ${result}"
+    log "Backuping finished ${result}"
 }
 
 dbRestore () {
@@ -49,7 +49,7 @@ dbRestore () {
     log "Creating database \"${MYSQL_DEST_DATABASE}\" on Host: \"${MYSQL_DEST_HOST}\""
     result=$(($(which mysql) -u $2 -p$3 -h $1 -e 'create database if not exists $4;') 2>&1)
     log "Creating database finished ${result}"
-    log "Starting restore using these settings: Host: \"${MYSQL_DEST_HOST}\" Username: \"${MYSQL_DEST_USERNAME}\" Database: \"${MYSQL_DEST_DATABASE}\""
+    log "Restoring database using these settings: Host: \"${MYSQL_DEST_HOST}\" Username: \"${MYSQL_DEST_USERNAME}\" Database: \"${MYSQL_DEST_DATABASE}\""
     result=$(($(which mysql) -u $2 -p$3 -h $1 $4 < ${DEST_DIR}/*.sql) 2>&1)
     log "Restore finished ${result}"
 }
