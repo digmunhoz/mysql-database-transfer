@@ -5,6 +5,10 @@ MYSQL_SOURCE_HOST=${MYSQL_SOURCE_HOST:-}
 MYSQL_SOURCE_USERNAME=${MYSQL_SOURCE_USERNAME:-}
 MYSQL_SOURCE_PASSWORD=${MYSQL_SOURCE_PASSWORD:-}
 MYSQL_SOURCE_DATABASE=${MYSQL_SOURCE_DATABASE:-}
+MYSQL_DEST_HOST=${MYSQL_DEST_HOST:-}
+MYSQL_DEST_USERNAME=${MYSQL_DEST_USERNAME:-}
+MYSQL_DEST_PASSWORD=${MYSQL_DEST_PASSWORD:-}
+MYSQL_DEST_DATABASE=${MYSQL_DEST_DATABASE:-}
 DEST_DIR=/tmp/
 DATETIME=$(date +%Y%M%d%H%M)
 LOG=/tmp/backup.txt
@@ -34,6 +38,22 @@ dbBackup () {
     log "Backup finished ${result}"
 }
 
+dbRestore () {
+    server=$1
+    username=$2
+    password=$3
+    database=$4
+    log "Dropping database \"${MYSQL_DEST_DATABASE}\" on Host: \"${MYSQL_DEST_HOST}\""
+    result=$(($(which mysql) -u $2 -p$3 -h $1 -e 'drop database if exists $4;') 2>&1)
+    log "Dropping database finished ${result}"
+    log "Creating database \"${MYSQL_DEST_DATABASE}\" on Host: \"${MYSQL_DEST_HOST}\""
+    result=$(($(which mysql) -u $2 -p$3 -h $1 -e 'create database if not exists $4;') 2>&1)
+    log "Creating database finished ${result}"
+    log "Starting restore using these settings: Host: \"${MYSQL_DEST_HOST}\" Username: \"${MYSQL_DEST_USERNAME}\" Database: \"${MYSQL_DEST_DATABASE}\""
+    result=$(($(which mysql) -u $2 -p$3 -h $1 $4 < ${DEST_DIR}/*.sql) 2>&1)
+    log "Restore finished ${result}"
+}
+
 # Parameter 1: Host
 # Parameter 2: Username
 # Parameter 3: Password
@@ -42,3 +62,12 @@ dbBackup ${MYSQL_SOURCE_HOST} \
          ${MYSQL_SOURCE_USERNAME} \
          ${MYSQL_SOURCE_PASSWORD} \
          ${MYSQL_SOURCE_DATABASE}
+
+# Parameter 1: Host
+# Parameter 2: Username
+# Parameter 3: Password
+# Parameter 4: Database
+dbRestore ${MYSQL_DEST_HOST} \
+          ${MYSQL_DEST_USERNAME} \
+          ${MYSQL_DEST_PASSWORD} \
+          ${MYSQL_DEST_DATABASE}
