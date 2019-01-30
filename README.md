@@ -7,6 +7,8 @@ It has a pretty output to help you to see what's happing while the process is ru
 
 The process will run using `Docker` and `Make` commands.
 
+> The source database will not be removed.
+
 ## Prerequisites
 
 All you need is to have [`Docker`](https://docs.docker.com/install/).
