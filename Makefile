@@ -10,4 +10,4 @@ run: ; @\
         clear; \
         echo "[Running MySQL Database Transfer...]"; \
         echo "";\
-        docker run --rm --env-file env.list ${DOCKER_IMAGE_NAME}
+        docker run --rm --env-file env.list -v $(shell pwd)/src/:/opt/:ro ${DOCKER_IMAGE_NAME}
