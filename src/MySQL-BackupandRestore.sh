@@ -44,10 +44,10 @@ dbRestore () {
     password=$3
     database=$4
     log "Dropping database \"${MYSQL_DEST_DATABASE}\" on Host: \"${MYSQL_DEST_HOST}\""
-    result=$(($(which mysql) -u $2 -p$3 -h $1 -e 'drop database if exists $4;') 2>&1)
+    result=$(($(which mysql) -u $2 -p$3 -h $1 -e "drop database if exists $4;") 2>&1)
     log "Dropping database finished ${result}"
     log "Creating database \"${MYSQL_DEST_DATABASE}\" on Host: \"${MYSQL_DEST_HOST}\""
-    result=$(($(which mysql) -u $2 -p$3 -h $1 -e 'create database if not exists $4;') 2>&1)
+    result=$(($(which mysql) -u $2 -p$3 -h $1 -e "create database if not exists $4;") 2>&1)
     log "Creating database finished ${result}"
     log "Restoring database using these settings: Host: \"${MYSQL_DEST_HOST}\" Username: \"${MYSQL_DEST_USERNAME}\" Database: \"${MYSQL_DEST_DATABASE}\""
     result=$(($(which mysql) -u $2 -p$3 -h $1 $4 < ${DEST_DIR}/*.sql) 2>&1)
