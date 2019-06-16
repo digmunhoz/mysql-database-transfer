@@ -18,6 +18,8 @@ All you need is to have [`Docker`](https://docs.docker.com/install/).
 There are few variables (below) to adjust, to set the source and destination servers.
 All settings are managed by environment variables which are defined in [env.list](./env.list) file.
 
+### MySQL to MySQL
+
 ```
 MYSQL_SOURCE_HOST=
 MYSQL_SOURCE_USERNAME=
@@ -29,7 +31,22 @@ MYSQL_DEST_PASSWORD=
 MYSQL_DEST_DATABASE=
 ```
 
-> To avoid any problem, please create an user only with SHOW, SELECT and EVENT permissions to use on MYSQL_SOURCE_USERNAME variable.
+### MySQL to AWS S3
+
+If you choose to copy the dump of the database to S3, all files will be written using `ONE-ZONE_IA` storage class.
+
+```
+MYSQL_SOURCE_HOST=
+MYSQL_SOURCE_USERNAME=
+MYSQL_SOURCE_PASSWORD=
+MYSQL_SOURCE_DATABASE=
+DEST_TYPE=s3
+AWS_S3_BUCKET_NAME=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+```
+
+> To avoid any problem, please create an user only with SHOW, SELECT and EVENT permissions to be used on MYSQL_SOURCE_USERNAME variable.
 
 ## Running the process
 
