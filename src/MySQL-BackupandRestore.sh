@@ -79,7 +79,7 @@ dbRestore () {
 dbS3Copy () {
     bucket=${AWS_S3_BUCKET_NAME}
     log "Copying dump to AWS S3 Bucket: \"${bucket}\""
-    result=$((aws s3 cp --storage-class ONE-ZONE_IA /tmp/*.sql s3://${bucket}/${DATE}.sql > /dev/null) 2>&1)
+    result=$((aws s3 cp --storage-class ONEZONE_IA /tmp/*.sql s3://${bucket}/${DATE}.sql > /dev/null) 2>&1)
     log "Copying dump to AWS S3 Bucket finished. ${result}"
 }
 
